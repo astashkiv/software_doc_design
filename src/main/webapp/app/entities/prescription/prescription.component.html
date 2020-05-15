@@ -1,0 +1,77 @@
+<div>
+    <h2 id="page-heading">
+        <span>Prescriptions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-prescription" [routerLink]="['/prescription/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Prescription
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="prescriptions?.length === 0">
+        <span>No prescriptions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="prescriptions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="name"><span>Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="timings"><span>Timings</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="medicineCount"><span>Medicine Count</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="signedBy.id"><span>Signed By</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="patient.id"><span>Patient</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let prescription of prescriptions ;trackBy: trackId">
+                    <td><a [routerLink]="['/prescription', prescription.id, 'view']">{{ prescription.id }}</a></td>
+                    <td>{{ prescription.name }}</td>
+                    <td>{{ prescription.timings }}</td>
+                    <td>{{ prescription.medicineCount }}</td>
+                    <td>
+                        <div *ngIf="prescription.signedBy">
+                            <a [routerLink]="['/doctor', prescription.signedBy?.id, 'view']" >{{ prescription.signedBy?.id }}</a>
+                        </div>
+                    </td>
+                    <td>
+                        <div *ngIf="prescription.patient">
+                            <a [routerLink]="['/patient', prescription.patient?.id, 'view']" >{{ prescription.patient?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/prescription', prescription.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/prescription', prescription.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(prescription)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

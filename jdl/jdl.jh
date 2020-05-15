@@ -1,0 +1,118 @@
+entity Doctor {
+	id Long
+    name String required unique maxlength(100)
+    phone String unique pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/)
+ 	address String maxlength(100)
+}
+
+entity Patient {
+	id Long
+    name String required unique maxlength(100)
+    phone String unique pattern(/^(\+\d{1,3}[- ]?)?\d{10}$/)
+ 	address String maxlength(100)
+}
+
+entity Booking {
+	id Long
+    when ZonedDateTime
+}
+
+entity Admin {
+	id Long
+    username String required unique maxlength(100)
+    password String required
+}
+
+entity Department {
+	id Long
+	name String required
+}
+
+entity Query {
+	id Long
+	query String required
+    answer String
+}
+
+entity Feedback {
+	id Long
+}
+
+entity Medicine {
+	id Long
+	name String required
+	instruction String
+}
+
+entity Language {
+	id Long
+    translation String
+}
+
+entity DoctorCertificate {
+	id Long
+    name String required
+    receivedDate LocalDate
+}
+
+entity PatientCertificate {
+	id Long
+    name String required
+    receivedDate LocalDate
+}
+
+entity Prescription {
+	id Long
+    name String
+    timings String
+    medicineCount Integer
+}
+
+entity MedicalCondition {
+	id Long
+    age Integer
+    height Double
+    weight Double
+    comments String
+    temperature Double
+    bloodSugarLevel Double
+    pressure String
+    pulse Integer
+}
+
+entity Payment {
+	id Long
+    invoiceCode String
+    date LocalDate
+    amount Integer
+}
+
+relationship ManyToMany {
+    Prescription{medicines} to Medicine{prescriptions}
+    Medicine{languagesIn} to Language{medicines}
+}
+
+relationship OneToOne {
+	Prescription{signedBy} to Doctor
+    Query{answeredBy} to Doctor
+    Booking{toWho} to Doctor
+}
+
+relationship OneToMany {
+	Admin{doctors} to Doctor
+    Department{doctors} to Doctor{department}
+    Doctor{feedbacks} to Feedback{doctor}
+    Patient{feedbacks} to Feedback{patient}
+    Patient{prescriptions} to Prescription{patient}
+    Doctor{certificates} to DoctorCertificate{doctor}
+    Patient{certificates} to PatientCertificate{doctor}
+    Patient{queries} to Query{askedBy}
+	Patient{bookings} to Booking{byWho}
+    Patient{conditions} to MedicalCondition{patient}
+    Doctor{payments} to Payment{doctor}
+    Patient{payments} to Payment{patient}
+}
+
+filter all 
+paginate all with infinite-scroll
+service all with serviceImpl

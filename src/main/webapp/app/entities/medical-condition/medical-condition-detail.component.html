@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="medicalCondition">
+            <h2><span>Medical Condition</span> {{ medicalCondition.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Age</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.age }}</span>
+                </dd>
+                <dt><span>Height</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.height }}</span>
+                </dd>
+                <dt><span>Weight</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.weight }}</span>
+                </dd>
+                <dt><span>Comments</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.comments }}</span>
+                </dd>
+                <dt><span>Temperature</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.temperature }}</span>
+                </dd>
+                <dt><span>Blood Sugar Level</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.bloodSugarLevel }}</span>
+                </dd>
+                <dt><span>Pressure</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.pressure }}</span>
+                </dd>
+                <dt><span>Pulse</span></dt>
+                <dd>
+                    <span>{{ medicalCondition.pulse }}</span>
+                </dd>
+                <dt><span>Patient</span></dt>
+                <dd>
+                    <div *ngIf="medicalCondition.patient">
+                        <a [routerLink]="['/patient', medicalCondition.patient?.id, 'view']">{{ medicalCondition.patient?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/medical-condition', medicalCondition.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

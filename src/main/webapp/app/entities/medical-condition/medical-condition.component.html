@@ -1,0 +1,81 @@
+<div>
+    <h2 id="page-heading">
+        <span>Medical Conditions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-medical-condition" [routerLink]="['/medical-condition/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Medical Condition
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="medicalConditions?.length === 0">
+        <span>No medicalConditions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="medicalConditions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="reset.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="age"><span>Age</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="height"><span>Height</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="weight"><span>Weight</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="comments"><span>Comments</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="temperature"><span>Temperature</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="bloodSugarLevel"><span>Blood Sugar Level</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="pressure"><span>Pressure</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="pulse"><span>Pulse</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="patient.id"><span>Patient</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+                <tr *ngFor="let medicalCondition of medicalConditions ;trackBy: trackId">
+                    <td><a [routerLink]="['/medical-condition', medicalCondition.id, 'view']">{{ medicalCondition.id }}</a></td>
+                    <td>{{ medicalCondition.age }}</td>
+                    <td>{{ medicalCondition.height }}</td>
+                    <td>{{ medicalCondition.weight }}</td>
+                    <td>{{ medicalCondition.comments }}</td>
+                    <td>{{ medicalCondition.temperature }}</td>
+                    <td>{{ medicalCondition.bloodSugarLevel }}</td>
+                    <td>{{ medicalCondition.pressure }}</td>
+                    <td>{{ medicalCondition.pulse }}</td>
+                    <td>
+                        <div *ngIf="medicalCondition.patient">
+                            <a [routerLink]="['/patient', medicalCondition.patient?.id, 'view']" >{{ medicalCondition.patient?.id }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/medical-condition', medicalCondition.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/medical-condition', medicalCondition.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(medicalCondition)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

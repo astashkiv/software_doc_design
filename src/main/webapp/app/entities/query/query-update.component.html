@@ -1,0 +1,60 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-query-heading">Create or edit a Query</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_query">Query</label>
+                    <input type="text" class="form-control" name="query" id="field_query"
+                           formControlName="query"/>
+                    <div *ngIf="editForm.get('query')!.invalid && (editForm.get('query')!.dirty || editForm.get('query')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('query')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_answer">Answer</label>
+                    <input type="text" class="form-control" name="answer" id="field_answer"
+                           formControlName="answer"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_answeredBy">Answered By</label>
+                    <select class="form-control" id="field_answeredBy" name="answeredBy" formControlName="answeredBy">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="doctorOption.id === editForm.get('answeredBy')!.value?.id ? editForm.get('answeredBy')!.value : doctorOption" *ngFor="let doctorOption of answeredbies; trackBy: trackById">{{ doctorOption.id }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_askedBy">Asked By</label>
+                    <select class="form-control" id="field_askedBy" name="askedBy" formControlName="askedBy">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="patientOption.id === editForm.get('askedBy')!.value?.id ? editForm.get('askedBy')!.value : patientOption" *ngFor="let patientOption of patients; trackBy: trackById">{{ patientOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="feedback">
+            <h2><span>Feedback</span> {{ feedback.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Doctor</span></dt>
+                <dd>
+                    <div *ngIf="feedback.doctor">
+                        <a [routerLink]="['/doctor', feedback.doctor?.id, 'view']">{{ feedback.doctor?.id }}</a>
+                    </div>
+                </dd>
+                <dt><span>Patient</span></dt>
+                <dd>
+                    <div *ngIf="feedback.patient">
+                        <a [routerLink]="['/patient', feedback.patient?.id, 'view']">{{ feedback.patient?.id }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/feedback', feedback.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
